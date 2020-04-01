@@ -7,11 +7,11 @@ import { RecipeItemComponent } from './recipe-item/recipe-item.component';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
-  items: RecipeItemComponent[] = [];
+  recipes: RecipeItemComponent[] = [];
 
   constructor() { 
-    this.items.push(new RecipeItemComponent);
-    this.items.push(new RecipeItemComponent);
+    this.recipes.push(new RecipeItemComponent);
+    this.recipes.push(new RecipeItemComponent);
   }
 
   ngOnInit(): void {
