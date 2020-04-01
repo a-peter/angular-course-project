@@ -4,7 +4,13 @@
         <hr>
         <p>The shopping list itself</p>
         <ul class="list-group">
-            <a class="list-group-item" style="cursor: pointer">x</a>
+            <a 
+                *ngFor="let ing of ingredients" 
+                class="list-group-item" 
+                style="cursor: pointer"
+            >
+                ({{ing.amount}}) {{ing.name}}
+            </a>
         </ul>
     </div>
 </div>
