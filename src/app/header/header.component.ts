@@ -7,16 +7,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  @Output() navigation = new EventEmitter<number>();
+  @Output() featureSelected = new EventEmitter<string>();
 
-  onRecipesClicked() {
-    console.log('Recipes clicked');
-    this.navigation.emit(0);
-  }
-
-  onShoppingListClicked() {
-    console.log('Shopping List clicked');
-    this.navigation.emit(1);
+  onSelect(feature: string) {
+    console.log(feature, 'clicked');
+    this.featureSelected.emit(feature);
   }
 
   constructor() { }

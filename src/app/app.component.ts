@@ -7,8 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   showRecipes: boolean = true;
-  onNavigation(target: number) {
-    console.log('app.component: navigation event received', target);
-    this.showRecipes = target == 0;
+  
+  onNavigation(feature: string) {
+    console.log('app.component: navigation event received', feature);
+    this.showRecipes = feature === 'recipe';
   }
 }
