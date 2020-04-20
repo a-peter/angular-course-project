@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  showRecipes: boolean = true;
-  
+  showRecipes: boolean = false;
+
   onNavigation(feature: string) {
     console.log('app.component: navigation event received', feature);
     this.showRecipes = feature === 'recipe';
