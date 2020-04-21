@@ -13,10 +13,13 @@ export class DropdownDirective {
         // console.log(this.elementRef);
         // console.dir(this.elementRef.nativeElement);
         // console.log(this.elementRef.nativeElement.classList);
+        
+        // Possible but bad. Don't modify the DOM
+        // tree direct. Better use @HostBinding
+        // this.elementRef.nativeElement.classList.toggle('open');
 
         // This code, to close the DropDown by clicking
         // the DropDown exactly
-        // this.elementRef.nativeElement.classList.toggle('open');
         // this.isOpen = !this.isOpen;
 
         // This code, to close the DropDown on a click
