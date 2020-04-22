@@ -10,7 +10,7 @@ export class ShoppingListService {
     new Ingredient('Tomatoes', 10)
   ];
 
-  shoppingListChanged = new EventEmitter<void>();
+  shoppingListChanged = new EventEmitter<Ingredient[]>();
 
   constructor() { }
 
@@ -21,6 +21,6 @@ export class ShoppingListService {
   addIngredient(ingredient: Ingredient) {
     console.log('shopping-list.service is adding', ingredient.name, ingredient.amount);
     this.ingredients.push(ingredient);
-    this.shoppingListChanged.emit();
+    this.shoppingListChanged.emit(this.ingredients.slice());
   }
 }
