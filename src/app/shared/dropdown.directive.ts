@@ -24,8 +24,8 @@ export class DropdownDirective {
 
         // This code, to close the DropDown on a click
         // anywhere on the page.
-        console.log(this.elementRef.nativeElement);
-        console.log(event.target);
+        // console.log(this.elementRef.nativeElement);
+        // console.log(event.target);
         this.isOpen = this.elementRef.nativeElement.contains(event.target) ? !this.isOpen : false;
     }
 }
