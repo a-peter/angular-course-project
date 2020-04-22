@@ -21,6 +21,16 @@ export class ShoppingListService {
   addIngredient(ingredient: Ingredient) {
     console.log('shopping-list.service is adding', ingredient.name, ingredient.amount);
     this.ingredients.push(ingredient);
+    this.notifyChange();
+  }
+
+  addIngredients(ingredients: Ingredient[]) {
+    console.log('adding list of ', ingredients.length, 'items to shopping list');
+    this.ingredients.push(...ingredients);
+    this.notifyChange();
+  }
+  
+  notifyChange() {
     this.shoppingListChanged.emit(this.ingredients.slice());
   }
 }
