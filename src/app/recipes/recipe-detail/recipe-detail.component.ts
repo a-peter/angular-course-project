@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -14,6 +14,7 @@ export class RecipeDetailComponent implements OnInit {
 
   constructor(
     private recipeService: RecipeService,
+    private router: Router,
     private route: ActivatedRoute
   ) {}
 
@@ -27,5 +28,17 @@ export class RecipeDetailComponent implements OnInit {
   onAddToShoppingListClicked() {
     console.log('Adding ingredients to shopping list');
     this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+  }
+
+  onEditRecipe() {
+    // Diese Variante würde reichen. Dann kann auf 
+    // das Speichern der ID in der Komponente 
+    // verzichtet werden.
+    this.router.navigate(['edit'], {relativeTo: this.route});
+
+    // Beispiel, um eine komplexere Navigation zu demonstrieren.
+    // In diesem Beispiel, mit diesen Routen, ist
+    // das so nicht notwendig.
+    // this.router.navigate(['..', this.id, 'edit'], {relativeTo: this.route});
   }
 }
