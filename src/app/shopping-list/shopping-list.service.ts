@@ -31,6 +31,23 @@ export class ShoppingListService {
     this.ingredients.push(...ingredients);
     this.notifyChange();
   }
+
+  getIngredient(index: number): Ingredient {
+    if (index < 0 || index >= this.ingredients.length) {
+      return null;
+    } else {
+      return this.ingredients[index];
+    }
+  }
+
+  deleteIngredient(index: number) {
+    if (index < 0 || index >= this.ingredients.length) {
+      console.error('Trying to delete invalid index', index);
+    } else {
+      this.ingredients.splice(index, 1);
+      this.notifyChange();
+    }
+  }
   
   notifyChange() {
     this.shoppingListChanged.next(this.ingredients.slice());

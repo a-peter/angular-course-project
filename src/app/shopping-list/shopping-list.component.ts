@@ -41,8 +41,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onEditItem(i: number) {
-    console.log('Clicked item', i, this.ingredients[i]);
+    // console.log('Clicked item', i, this.ingredients[i]);
     this.shoppingListService.startedEditing.next(i);
-    
   }
 }

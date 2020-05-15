@@ -14,6 +14,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   private shoppingListEditingSubscription: Subscription;
   editMode = false;
   editItemIndex: number;
+  editItem: Ingredient;
 
   @ViewChild('f', { static: false }) amountForm: NgForm;
 
@@ -28,11 +29,15 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         console.log('Editing', index);
         this.editMode = true;
         this.editItemIndex = index;
-        const item = this.shoppingListService.getShoppingList()[index];
+        this.editItem = this.shoppingListService.getIngredient(index);
         this.amountForm.setValue({
-          name: item.name,
-          amount: item.amount,
+          name: this.editItem.name,
+          amount: this.editItem.amount,
         });
+        // This would work too. But should not be done.
+        // When the format of Ingredient changes, this code
+        // might break!!!
+        // this.amountForm.setValue(this.editItem);
       }
     );
   }
@@ -46,6 +51,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const newIngredient = new Ingredient(formValues.name, formValues.amount);
     console.log('shopping-edit: Add item', newIngredient);
     this.shoppingListService.addIngredient(newIngredient);
+  }
+
+  onDeleteItem() {
+    if (this.editMode) {
+      this.shoppingListService.deleteIngredient(this.editItemIndex);
+    }
   }
 
   logForm() {
