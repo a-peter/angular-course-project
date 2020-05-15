@@ -5,9 +5,10 @@
         <p>The shopping list itself</p>
         <ul class="list-group">
             <a 
-                *ngFor="let ing of ingredients" 
+                *ngFor="let ing of ingredients; index as i" 
                 class="list-group-item" 
                 style="cursor: pointer"
+                (click)="onEditItem(i)"
             >
                 ({{ing.amount}}) {{ing.name}}
             </a>

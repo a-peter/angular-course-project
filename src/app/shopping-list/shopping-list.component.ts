@@ -12,7 +12,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   ingredients: Ingredient[];
   private shoppingListChangedSubscription: Subscription;
 
-  constructor(private shoppingList: ShoppingListService) {}
+  constructor(private shoppingListService: ShoppingListService) {}
 
   ngOnInit(): void {
     // Possible. But in my opinion a duplication
@@ -25,10 +25,10 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     // );
 
     // If you subscribe, don't forget to unsubscribe!
-    this.shoppingListChangedSubscription = this.shoppingList.shoppingListChanged.subscribe(
+    this.shoppingListChangedSubscription = this.shoppingListService.shoppingListChanged.subscribe(
       this.onShoppingListChanged.bind(this)
     );
-    this.onShoppingListChanged(this.shoppingList.getShoppingList());
+    this.onShoppingListChanged(this.shoppingListService.getShoppingList());
   }
 
   ngOnDestroy() {
@@ -38,5 +38,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   onShoppingListChanged(newIngredients: Ingredient[]) {
     console.log('onShoppingListChanged');
     this.ingredients = newIngredients;
+  }
+
+  onEditItem(i: number) {
+    console.log('Clicked item', i, this.ingredients[i]);
+    this.shoppingListService.startedEditing.next(i);
+    
   }
 }

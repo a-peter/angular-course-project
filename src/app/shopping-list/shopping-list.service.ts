@@ -12,6 +12,7 @@ export class ShoppingListService {
   ];
 
   shoppingListChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
   constructor() { }
 
