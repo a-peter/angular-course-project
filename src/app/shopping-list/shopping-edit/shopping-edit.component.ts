@@ -34,6 +34,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
           name: this.editItem.name,
           amount: this.editItem.amount,
         });
+
         // This would work too. But should not be done.
         // When the format of Ingredient changes, this code
         // might break!!!
@@ -51,12 +52,22 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const newIngredient = new Ingredient(formValues.name, formValues.amount);
     console.log('shopping-edit: Add item', newIngredient);
     this.shoppingListService.addIngredient(newIngredient);
+    this.amountForm.reset();
   }
 
   onDeleteItem() {
     if (this.editMode) {
       this.shoppingListService.deleteIngredient(this.editItemIndex);
+      this.amountForm.reset();
+      this.editItemIndex = -1;
+      this.editItem = null;
+      this.editMode = false;
     }
+  }
+
+  onClear() {
+    this.amountForm.reset();
+    this.editMode = false;
   }
 
   logForm() {
