@@ -48,6 +48,15 @@ export class ShoppingListService {
       this.notifyChange();
     }
   }
+
+  updateIngredient(index: number, ingredient: Ingredient) {
+    if (index < 0 || index >= this.ingredients.length) {
+      console.error('Trying to update invalid index', index);
+    } else {
+      this.ingredients[index] = ingredient;
+      this.notifyChange();
+    }
+  }
   
   notifyChange() {
     this.shoppingListChanged.next(this.ingredients.slice());
