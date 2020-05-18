@@ -50,10 +50,9 @@ export class RecipeEditComponent implements OnInit {
       recipeDescription = recipe.description;
       if (recipe.ingredients) {
         for (let ingredient of recipe.ingredients) {
-          recipeIngredients.push(new FormGroup({
-            'name': new FormControl(ingredient.name),
-            'amount': new FormControl(ingredient.amount)
-          }))
+          recipeIngredients.push(this.createIngredientControl(
+            ingredient.name, ingredient.amount
+          ))
         }
       }
     }
@@ -68,5 +67,24 @@ export class RecipeEditComponent implements OnInit {
 
   get controls() {
     return (<FormArray>this.recipeForm.get(this.controlIngredients)).controls;
+  }
+
+  onAddIngredient() {
+    (<FormArray>this.recipeForm.get(this.controlIngredients)).push(
+      this.createIngredientControl('', null)
+    )
+  }
+
+  /**
+   * Returns a FormGroup containing elements for
+   * name and amount.
+   * @param iName - Optional name of the new ingredient
+   * @param iAmount - Optional amount of the new ingredient
+   */
+  createIngredientControl(iName: String, iAmount: number): FormGroup {
+    return new FormGroup({
+      'name': new FormControl(iName),
+      'amount': new FormControl(iAmount)
+    });
   }
 }

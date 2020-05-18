@@ -69,10 +69,14 @@
             class="row"
             *ngFor="let ingredientCtrl of controls; index as i"
             [formGroupName]="i"
+            style="margin-top: 10px;"
           >
             <div class="col-xs-8">
-              <input type="text" class="form-control" 
-              formControlName="name"
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                placeholder="new ingredient"
               />
             </div>
             <div class="col-xs-2">
@@ -81,6 +85,7 @@
                 min="1"
                 class="form-control"
                 formControlName="amount"
+                placeholder="amount"
               />
             </div>
             <div class="col-xs-2">
@@ -93,6 +98,18 @@
                   class="glyphicon glyphicon-trash"
                   aria-hidden="true"
                 ></span>
+              </button>
+            </div>
+          </div>
+          <hr />
+          <div class="row form-group">
+            <div class="col-xs-12">
+              <button
+                class="btn btn-success"
+                type="button"
+                (click)="onAddIngredient()"
+              >
+                Add Ingredient
               </button>
             </div>
           </div>
