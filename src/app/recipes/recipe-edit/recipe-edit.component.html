@@ -1,7 +1,7 @@
 <p>recipe-edit works! {{ id }}</p>
 <div class="row">
   <div class="col-xs-12">
-    <form>
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
       <!-- Buttons -->
       <div class="row">
         <div class="col-xs-12">
@@ -16,7 +16,13 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" class="form-control" />
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              [formControlName]="controlName"
+              [placeholder]="controlName"
+            />
           </div>
         </div>
       </div>
@@ -25,7 +31,13 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="imagePath">Image URL</label>
-            <input type="text" id="imagePath" class="form-control" />
+            <input
+              type="text"
+              id="imagePath"
+              class="form-control"
+              [formControlName]="controlImageUrl"
+              [placeholder]="controlImageUrl"
+            />
           </div>
         </div>
       </div>
@@ -44,6 +56,8 @@
               id="description"
               class="form-control"
               rows="6"
+              [formControlName]="controlDescription"
+              [placeholder]="controlDescription"
             ></textarea>
           </div>
         </div>
@@ -59,8 +73,15 @@
               <input type="number" min="1" class="form-control" />
             </div>
             <div class="col-xs-2">
-              <button type="button" class="btn btn-danger" aria-label="Left Align">
-                  <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              <button
+                type="button"
+                class="btn btn-danger"
+                aria-label="Left Align"
+              >
+                <span
+                  class="glyphicon glyphicon-trash"
+                  aria-hidden="true"
+                ></span>
               </button>
             </div>
           </div>
