@@ -33,6 +33,11 @@ export class RecipeService {
     return this.recipes[id];
   }
 
+  addRecipe(newRecipe: Recipe) {
+    const newIndex = this.recipes.push(newRecipe) - 1;
+    return newIndex;
+  }
+
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingList.addIngredients(ingredients);
   }

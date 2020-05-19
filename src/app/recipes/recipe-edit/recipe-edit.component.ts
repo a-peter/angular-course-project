@@ -20,9 +20,11 @@ export class RecipeEditComponent implements OnInit {
   controlDescription = 'description';
   controlIngredients = 'ingredients';
 
+  // This block for table of ingredients
   ingredientHeaders = ['Name', 'Amount'];
   ingredients: Ingredient[] = [];
   columnNames = ['name', 'amount'];
+  // block end
 
   constructor(
     private route: ActivatedRoute,
@@ -40,6 +42,40 @@ export class RecipeEditComponent implements OnInit {
   onSubmit() {
     console.log(this.recipeForm.valid);
     console.log(this.recipeForm.value);
+
+    const ingredients = this.ingredientsFromForm();
+    const rName = this.recipeForm.value[this.controlName];
+    const rDescription = this.recipeForm.value[this.controlDescription];
+    const rImageUrl = this.recipeForm.value[this.controlImageUrl];
+
+    if (this.editMode) {
+      let recipe = this.recipeService.getRecipe(this.id);
+      recipe.name = rName;
+      recipe.description = rDescription;
+      recipe.imagePath = rImageUrl;
+      recipe.ingredients = ingredients;
+    } else {
+      let recipe = new Recipe(
+        rName,
+        rDescription,
+        rImageUrl,
+        ingredients
+      );
+      this.id = this.recipeService.addRecipe(recipe);
+      this.editMode = false;
+    }
+  }
+
+  ingredientsFromForm(): Ingredient[] {
+    let ingredients: Ingredient[] = [];
+    const ing = <FormArray>this.recipeForm.get(this.controlIngredients);
+    for (let i = 0; i < ing.length; i++) {
+      ingredients.push(new Ingredient(
+        ing.get([i]).value.name,
+        ing.get([i]).value.amount
+      ))
+    }
+    return ingredients;
   }
 
   initForm() {
