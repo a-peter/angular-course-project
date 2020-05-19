@@ -43,12 +43,15 @@ export class RecipeEditComponent implements OnInit {
     console.log(this.recipeForm.valid);
     console.log(this.recipeForm.value);
 
-    let recipe = new Recipe(
+    const recipe = new Recipe(
       this.recipeForm.value[this.controlName],
       this.recipeForm.value[this.controlDescription],
       this.recipeForm.value[this.controlImageUrl],
-      this.ingredientsFromForm()
+      this.recipeForm.value[this.controlIngredients]
     );
+    // If the name of the controls and the name of the
+    // model does NOT FIT, a method like 
+    // ingredientsFromForm would create a copy.
 
     if (this.editMode) {
       this.recipeService.updateRecipe(recipe, this.id);
@@ -58,17 +61,17 @@ export class RecipeEditComponent implements OnInit {
     }
   }
 
-  ingredientsFromForm(): Ingredient[] {
-    let ingredients: Ingredient[] = [];
-    const ing = <FormArray>this.recipeForm.get(this.controlIngredients);
-    for (let i = 0; i < ing.length; i++) {
-      ingredients.push(new Ingredient(
-        ing.get([i]).value.name,
-        ing.get([i]).value.amount
-      ))
-    }
-    return ingredients;
-  }
+  // ingredientsFromForm(): Ingredient[] {
+  //   let ingredients: Ingredient[] = [];
+  //   const ing = <FormArray>this.recipeForm.get(this.controlIngredients);
+  //   for (let i = 0; i < ing.length; i++) {
+  //     ingredients.push(new Ingredient(
+  //       ing.get([i]).value.name,
+  //       ing.get([i]).value.amount
+  //     ))
+  //   }
+  //   return ingredients;
+  // }
 
   initForm() {
     let recipeName = '';
