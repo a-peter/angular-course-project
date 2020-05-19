@@ -38,6 +38,10 @@ export class RecipeService {
     return newIndex;
   }
 
+  updateRecipe(updatedRecipe: Recipe, id: number) {
+    this.recipes[id] = updatedRecipe;
+  }
+
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingList.addIngredients(ingredients);
   }

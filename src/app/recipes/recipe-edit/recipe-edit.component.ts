@@ -43,24 +43,16 @@ export class RecipeEditComponent implements OnInit {
     console.log(this.recipeForm.valid);
     console.log(this.recipeForm.value);
 
-    const ingredients = this.ingredientsFromForm();
-    const rName = this.recipeForm.value[this.controlName];
-    const rDescription = this.recipeForm.value[this.controlDescription];
-    const rImageUrl = this.recipeForm.value[this.controlImageUrl];
+    let recipe = new Recipe(
+      this.recipeForm.value[this.controlName],
+      this.recipeForm.value[this.controlDescription],
+      this.recipeForm.value[this.controlImageUrl],
+      this.ingredientsFromForm()
+    );
 
     if (this.editMode) {
-      let recipe = this.recipeService.getRecipe(this.id);
-      recipe.name = rName;
-      recipe.description = rDescription;
-      recipe.imagePath = rImageUrl;
-      recipe.ingredients = ingredients;
+      this.recipeService.updateRecipe(recipe, this.id);
     } else {
-      let recipe = new Recipe(
-        rName,
-        rDescription,
-        rImageUrl,
-        ingredients
-      );
       this.id = this.recipeService.addRecipe(recipe);
       this.editMode = false;
     }
