@@ -137,6 +137,10 @@ export class RecipeEditComponent implements OnInit {
     );
   }
 
+  onRemoveIngredient(id: number) {
+    (<FormArray>this.recipeForm.get(this.controlIngredients)).removeAt(id);
+  }
+
   /**
    * Returns a FormGroup containing elements for
    * name and amount.
