@@ -3,6 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 import { Recipe } from '../recipe.model';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -18,6 +19,10 @@ export class RecipeEditComponent implements OnInit {
   controlImageUrl = 'imageUrl';
   controlDescription = 'description';
   controlIngredients = 'ingredients';
+
+  ingredientHeaders = ['Name', 'Amount'];
+  ingredients: Ingredient[] = [];
+  columnNames = ['name', 'amount'];
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +50,7 @@ export class RecipeEditComponent implements OnInit {
 
     if (this.editMode) {
       const recipe: Recipe = this.recipeService.getRecipe(this.id);
+      this.ingredients = recipe.ingredients;
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
