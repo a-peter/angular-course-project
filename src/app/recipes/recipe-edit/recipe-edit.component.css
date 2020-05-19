@@ -2,3 +2,6 @@ input.ng-invalid,
 textarea.ng-invalid {
     border: 1px solid red;
 }
+img {
+    width: 100px;
+}
