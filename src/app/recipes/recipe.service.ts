@@ -46,6 +46,11 @@ export class RecipeService {
     this.notifyChange();
   }
 
+  deleteRecipe(id: number) {
+    this.recipes.splice(id, 1);
+    this.notifyChange();
+  }
+
   addIngredientsToShoppingList(ingredients: Ingredient[]) {
     this.shoppingList.addIngredients(ingredients);
   }
