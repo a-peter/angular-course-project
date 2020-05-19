@@ -21,9 +21,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.recipes = this.recipeService.getRecipes();
-    this.recipesChangedSubscription = this.recipeService.recipeListChanged.subscribe(
-      this.onNewRecipe.bind(this)
-    );
+    this.recipesChangedSubscription =  this.recipeService.recipeListChanged
+      .subscribe(
+        this.onRecipesChanged.bind(this) // BINDING!!!!!
+      )
   }
 
   ngOnDestroy() {
@@ -31,6 +32,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   onNewRecipe() {
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  onRecipesChanged(recipes: Recipe[]) {
+    this.recipes = recipes;
   }
 }
