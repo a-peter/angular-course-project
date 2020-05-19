@@ -41,9 +41,6 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.recipeForm.valid);
-    console.log(this.recipeForm.value);
-
     const recipe = new Recipe(
       this.recipeForm.value[this.controlName],
       this.recipeForm.value[this.controlDescription],
@@ -51,13 +48,15 @@ export class RecipeEditComponent implements OnInit {
       this.recipeForm.value[this.controlIngredients]
     );
     // If the name of the controls and the name of the
-    // model does NOT FIT, a method like 
+    // model does NOT FIT, a method like
     // ingredientsFromForm would create a copy.
 
     if (this.editMode) {
       this.recipeService.updateRecipe(recipe, this.id);
+      this.navigateUp();
     } else {
       this.id = this.recipeService.addRecipe(recipe);
+      this.router.navigate(['..', +this.id], { relativeTo: this.route });
       this.editMode = false;
     }
   }
@@ -68,7 +67,11 @@ export class RecipeEditComponent implements OnInit {
         return;
       }
     }
-    this.router.navigate(['..'], {relativeTo: this.route} )
+    this.navigateUp();
+  }
+
+  navigateUp() {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   // ingredientsFromForm(): Ingredient[] {
