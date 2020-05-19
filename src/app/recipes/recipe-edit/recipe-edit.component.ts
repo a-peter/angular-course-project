@@ -71,7 +71,7 @@ export class RecipeEditComponent implements OnInit {
   }
 
   navigateUp() {
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   // ingredientsFromForm(): Ingredient[] {
