@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
@@ -25,29 +25,7 @@ export class AuthService {
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB3b4bQDdifHMS9TnW0Al7raPgaDWBj5EM',
         { email: email, password: password, returnSecureToken: true }
       )
-      .pipe(
-        catchError((errorResponse) => {
-          let errorMessage = 'An unknown error occurred. ';
-          if (!errorResponse.error || !errorResponse.error.error) {
-            return throwError(errorMessage);
-          }
-          switch (errorResponse.error.error.message) {
-            case 'EMAIL_EXISTS':
-              errorMessage = 'This E-Mail is already registered.';
-              break;
-            case 'OPERATION_NOT_ALLOWED':
-              errorMessage = 'Password sign-in is disabled.';
-              break;
-            case 'TOO_MANY_ATTEMPTS_TRY_LATER':
-              errorMessage = 'Too many sign-in requests. Try later again.';
-              break;
-            default:
-              errorMessage = errorMessage + errorResponse.error.error.message;
-              break;
-          }
-          return throwError(errorMessage);
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
 
   login(email: string, password: string) {
@@ -56,28 +34,36 @@ export class AuthService {
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key= AIzaSyB3b4bQDdifHMS9TnW0Al7raPgaDWBj5EM ',
         { email: email, password: password, returnSecureToken: true }
       )
-      .pipe(
-        catchError((errorResponse) => {
-          // console.error(errorResponse);
-          let errorMessage = 'An unknown error occurred. ';
-          if (!errorResponse.error || !errorResponse.error.error) {
-            return throwError(errorMessage);
-          }
-          switch (errorResponse.error.error.message) {
-            case 'EMAIL_NOT_FOUND':
-              errorMessage = 'E-Mail is not registered.';
-              break;
-            case 'INVALID_PASSWORD':
-              errorMessage = 'Wrong E-Mail or wrong password.';
-              break;
-            case 'USER_DISABLED':
-              errorMessage = 'User is disabled. Please contact us.';
-              break;
-            default:
-              errorMessage = errorMessage + errorResponse.error.error.message;
-          }
-          return throwError(errorMessage);
-        })
-      );
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred. ';
+    if (!errorResponse.error || !errorResponse.error.error) {
+      return throwError(errorMessage);
+    }
+    switch (errorResponse.error.error.message) {
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This E-Mail is already registered.';
+        break;
+      case 'OPERATION_NOT_ALLOWED':
+        errorMessage = 'Password sign-in is disabled.';
+        break;
+      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+        errorMessage = 'Too many sign-in requests. Try later again.';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'E-Mail is not registered.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'Wrong E-Mail or wrong password.';
+        break;
+      case 'USER_DISABLED':
+        errorMessage = 'User is disabled. Please contact us.';
+        break;
+      default:
+        errorMessage = errorMessage + errorResponse.error.error.message;
+    }
+    return throwError(errorMessage);
   }
 }
