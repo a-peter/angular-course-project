@@ -20,7 +20,6 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
     if (form.invalid) {
       console.error("Form is invalid. Can't submit.");
       return;
@@ -39,11 +38,11 @@ export class AuthComponent implements OnInit {
     
     this.authObservable.subscribe(
       (responseData) => {
-        console.log(responseData);
+        // console.log(responseData);
         this.isLoading = false;
       },
       (errorMessage) => {
-        console.error(errorMessage);
+        // console.error(errorMessage);
         this.isLoading = false;
         this.error = errorMessage;
       }

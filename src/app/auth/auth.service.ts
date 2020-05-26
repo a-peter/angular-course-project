@@ -18,7 +18,7 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
-  user = new Subject<User>();
+  public user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
 
@@ -66,6 +66,8 @@ export class AuthService {
     token: string,
     expiresIn: number
   ) {
+    console.log('user authenticated', email);
+    
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, id, token, expirationDate);
     this.user.next(user);
