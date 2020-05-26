@@ -16,7 +16,7 @@ import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeSelectComponent } from './recipes/recipe-select/recipe-select.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { AuthComponent } from './auth/auth/auth.component';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
