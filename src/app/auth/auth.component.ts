@@ -37,10 +37,10 @@ export class AuthComponent implements OnInit {
           console.log(responseData);
           this.isLoading = false;
         },
-        (error) => {
-          console.error(error);
+        (errorMessage) => {
+          console.error(errorMessage);
           this.isLoading = false;
-          this.error = `An error occurred: ${error.error.error.message}`;
+          this.error = errorMessage;
         }
       );
     }
