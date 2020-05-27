@@ -31,29 +31,52 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.authService.user.pipe(
-      take(1),
-      // This passes the internally returned observable to
-      // the outer return statement.
-      //
-      exhaustMap((user) => {
-        console.log('token', user.token);
-
-        return this.http.get<Recipe[]>(this.recipesUrl, {
-          params: new HttpParams()
-            .set('print', 'pretty')
-            .append('auth', user.token),
-        });
-      }),
-      map((recipes) => {
-        return recipes.map((recipe) => {
-          return {
-            ...recipe,
-            ingredients: recipe.ingredients ? recipe.ingredients : [],
-          };
-        });
-      }),
-      tap((recipes) => this.recipeService.setRecipes(recipes))
-    );
+    return this.http
+      .get<Recipe[]>(this.recipesUrl, {
+        params: new HttpParams().set('print', 'pretty'),
+      })
+      .pipe(
+        // Fixing bug with empty ingredients
+        map((recipes) => {
+          return recipes.map((recipe) => {
+            return {
+              ...recipe,
+              ingredients: recipe.ingredients ? recipe.ingredients : [],
+            };
+          });
+        }),
+        // Setting the recipes inside the service
+        tap((recipes) => this.recipeService.setRecipes(recipes))
+      );
   }
+
+  // With authentication inside the method.
+  // It is much easyer to use the interceptor. This code
+  // is only here to show how to concat two actions.
+  // fetchRecipes() {
+  //   return this.authService.user.pipe(
+  //     take(1),
+  //     // This passes the internally returned observable to
+  //     // the outer return statement.
+  //     //
+  //     exhaustMap((user) => {
+  //       console.log('token', user.token);
+
+  //       return this.http.get<Recipe[]>(this.recipesUrl, {
+  //         params: new HttpParams()
+  //           .set('print', 'pretty')
+  //           .append('auth', user.token),
+  //       });
+  //     }),
+  //     map((recipes) => {
+  //       return recipes.map((recipe) => {
+  //         return {
+  //           ...recipe,
+  //           ingredients: recipe.ingredients ? recipe.ingredients : [],
+  //         };
+  //       });
+  //     }),
+  //     tap((recipes) => this.recipeService.setRecipes(recipes))
+  //   );
+  // }
 }
