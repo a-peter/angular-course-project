@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind?: string;
@@ -20,7 +21,8 @@ export interface AuthResponseData {
 export class AuthService {
   public user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   signup(email: string, password: string) {
     return this.http
@@ -60,6 +62,26 @@ export class AuthService {
       );
   }
 
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
+  }
+
+  autoLogin() {
+    if (localStorage.userData) {
+      let u = JSON.parse(localStorage.userData);
+      const loadedUser = new User(
+        u.email,
+        u.id,
+        u._token,
+        new Date(u._tokenExpirationDate)
+      );
+      if (loadedUser.token) {
+        this.user.next(loadedUser);
+      }
+    }
+  }
+
   private handleAuthentication(
     email: string,
     id: string,
@@ -67,10 +89,11 @@ export class AuthService {
     expiresIn: number
   ) {
     console.log('user authenticated', email, token.slice(0, 40), '...');
-    
+
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, id, token, expirationDate);
     this.user.next(user);
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
