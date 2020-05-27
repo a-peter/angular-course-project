@@ -66,7 +66,7 @@ export class AuthService {
     token: string,
     expiresIn: number
   ) {
-    console.log('user authenticated', email);
+    console.log('user authenticated', email, token.slice(0, 40), '...');
     
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, id, token, expirationDate);
