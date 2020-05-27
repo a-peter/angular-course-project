@@ -19,10 +19,10 @@ export interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
+  private tokenExpirationTimer: any;
   public user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   signup(email: string, password: string) {
     return this.http
@@ -65,10 +65,17 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
+    this.clearLoginDataFromStorage();
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+      this.tokenExpirationTimer = null;
+    }
   }
 
   autoLogin() {
     if (localStorage.userData) {
+      console.log('Restore user data');
+
       let u = JSON.parse(localStorage.userData);
       const loadedUser = new User(
         u.email,
@@ -77,9 +84,30 @@ export class AuthService {
         new Date(u._tokenExpirationDate)
       );
       if (loadedUser.token) {
-        this.user.next(loadedUser);
+        const expirationDuration =
+          new Date(u._tokenExpirationDate).getTime() - new Date().getTime();
+        if (expirationDuration >= 0) {
+          this.user.next(loadedUser);
+          this.autoLogout(expirationDuration);
+        } else {
+          console.warn('login expired');
+        }
+      } else {
+        console.log('No token for user');
       }
     }
+  }
+
+  autoLogout(expirationDuration: number) {
+    console.log('Logging out in ms:', expirationDuration);
+
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
+
+  clearLoginDataFromStorage() {
+    localStorage.removeItem('userData');
   }
 
   private handleAuthentication(
@@ -93,6 +121,7 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, id, token, expirationDate);
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
