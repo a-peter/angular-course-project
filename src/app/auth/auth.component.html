@@ -42,13 +42,24 @@
         </button>
       </div>
     </form>
+    <!-- ###################################### -->
+    <!-- Alert in three variants -->
+    <!-- ###################################### -->
+    <!-- As HTML with *ngIf -->
     <!-- <div class="alert alert-danger" *ngIf="error">
       <p>{{ error }}</p>
     </div> -->
-    <app-alert
+    <!-- ###################################### -->
+    <!-- As component with *ngIf -->
+    <!-- <app-alert
       [message]="error"
       *ngIf="error"
       (close)="onErrorClosed()"
-    ></app-alert>
+    ></app-alert> -->
+    <!-- ###################################### -->
+    <!-- As component with dyn loader -->
+    <ng-template appPlaceholder></ng-template>
+    <!-- alternative without own placeholder: -->
+    <!-- <template #container></template> -->
   </div>
 </div>

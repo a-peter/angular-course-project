@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, ViewContainerRef, AfterViewInit, ComponentRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -13,15 +15,19 @@ export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
+  // @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective; 
 
   authObservable: Observable<AuthResponseData>;
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private resolver: ComponentFactoryResolver
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onSubmit(form: NgForm) {
     if (form.invalid) {
@@ -50,6 +56,7 @@ export class AuthComponent implements OnInit {
         // console.error(errorMessage);
         this.isLoading = false;
         this.error = errorMessage;
+        this.showErrorAlert(this.error);
       }
     );
 
@@ -61,6 +68,20 @@ export class AuthComponent implements OnInit {
   }
 
   onErrorClosed() {
-    this.error = null;
+    console.log('onErrorClosed', this);
+    this.alertHost.viewContainerRef.clear();
+    // this.error = null;
+  }
+
+  private showErrorAlert(message: string) {
+    const alertComponentFactory = this.resolver.resolveComponentFactory(
+      AlertComponent
+    );
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+    const c: ComponentRef<AlertComponent> = hostViewContainerRef.createComponent(alertComponentFactory);
+    c.instance.message = message;
+    c.instance.close.subscribe(this.onErrorClosed.bind(this));
+    // alertComponentFactory.create();
   }
 }
