@@ -26,14 +26,15 @@ import { RecipesRoutingModule } from './recipes-routing.module';
     RouterModule,
     RecipesRoutingModule
   ],
-  exports: [
-    RecipeDetailComponent,
-    RecipeEditComponent,
-    RecipeItemComponent,
-    RecipeListComponent,
-    RecipesComponent,
-    RecipeSelectComponent
-  ],
-  bootstrap: [],
+  // Due to recipes-routing.module.ts it is no longer
+  // necessary to export the components!
+  // exports: [
+  //   RecipeDetailComponent,
+  //   RecipeEditComponent,
+  //   RecipeItemComponent,
+  //   RecipeListComponent,
+  //   RecipesComponent,
+  //   RecipeSelectComponent
+  // ],
 })
 export class AppRecipesModule {}
